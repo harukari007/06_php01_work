@@ -2,7 +2,7 @@
 
 // データまとめ用の空文字変数
 $str = '';
-// $array = [];
+$array = [];
 
 // ファイルを開く（読み取り専用）
 $file = fopen('data/listofpart.csv', 'r');
@@ -12,10 +12,31 @@ flock($file, LOCK_EX);
 // fgets()で1行ずつ取得→$lineに格納
 if ($file) {
     while ($line = fgets($file)) {
-        // 取得したデータを`$str`に追加する
-        $str .= "<tr><td>{$line}</td></tr>";
-        // 配列に追加
-        $array[] = "<tr><td>{$line}</td></tr>";
+        // カンマ区切りでデータを取得
+        $data = explode(',', $line);
+
+
+        // データを整形して配列に追加
+        $array[] = [
+            "preferredDateTime" => $data[0],
+            "eventName" => $data[1],
+            "nameKana" => $data[2],
+            "email" => $data[3],
+            "phone" => $data[4],
+            "attendees" => $data[5],
+            "comments" => isset($data[6]) ? $data[6] : ''
+        ];
+
+        // 一覧画面用のHTMLを生成
+        $str .= "<tr>
+        <td>{$data[0]}</td>
+        <td>{$data[1]}</td>
+        <td>{$data[2]}</td>
+        <td>{$data[3]}</td>
+        <td>{$data[4]}</td>
+        <td>{$data[5]}</td>
+        <td>{$data[6]}</td>
+        </tr>";
     }
 }
 
@@ -24,23 +45,8 @@ flock($file, LOCK_UN);
 // ファイルを閉じる
 fclose($file);
 
-// `$str`に全てのデータ（タグに入った状態）がまとまるので，HTML内の任意の場所に表示する．
-
-$arrayString = implode("", $array);
-// if ($file) {
-//     while ($line = fgets($file)) {
-//         // いい感じの形にして配列に追加
-//         $array[] = [
-//             "todo" => str_replace("\n", "", implode(" ", array_slice(explode(" ", $line), 1))),
-//             "deadline" => explode(" ", $line)[0],
-//         ];
-//     }
-// }
-// 配列の要素を空文字で連結して文字列にする
-
-// var_dump($str);
-// exit();
-// データがとんでるか確認する。
+// 配列をJSON形式に変換
+$arrayString = json_encode($array);
 
 ?>
 
@@ -60,16 +66,33 @@ $arrayString = implode("", $array);
         <table>
             <thead>
                 <tr>
-                    <th><?= $str ?>参加者一覧</th>
+                    <th>日付</th>
+                    <th>セミナー名</th>
+                    <th>名前</th>
+                    <th>メール</th>
+                    <th>電話番号</th>
+                    <th>参加人数</th>
+                    <th>コメント</th>
                 </tr>
             </thead>
             <tbody>
+                <?php foreach ($array as $data) : ?>
+                    <tr>
+                        <td><?= htmlspecialchars($data['preferredDateTime'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($data['eventName'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($data['nameKana'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($data['email'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($data['phone'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($data['attendees'], ENT_QUOTES, 'UTF-8') ?></td>
+                        <td><?= htmlspecialchars($data['comments'], ENT_QUOTES, 'UTF-8') ?></td>
+                    </tr>
+                <?php endforeach; ?>
 
             </tbody>
         </table>
     </fieldset>
     <script>
-        const data = <?= json_encode($array) ?>;
+        const data = <?= $arrayString ?>;
         console.log(data);
     </script>
 </body>

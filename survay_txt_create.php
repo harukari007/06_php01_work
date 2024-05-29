@@ -13,9 +13,9 @@ $attendees = $_POST['attendees'];
 $paymentMethod = $_POST['paymentMethod'];
 $comments = $_POST['comments'];
 
-// データ1件を1行にまとめる（最後に改行を入れる）
-$write_data = "{$eventName} {$preferredDateTime}{$nameKana}{$email}{$phone}{$attendees}
-{$paymentMethod}{$comments}\n";
+// データ1件を1行にまとめる(カンマで区切る）
+$write_data = "{$preferredDateTime},{$eventName},{$nameKana},{$email},{$phone},{$attendees},
+{$comments}\n";
 
 // ファイルを開く．引数が`a`である部分に注目！
 $file = fopen('data/listofpart.csv', 'a');
@@ -29,6 +29,12 @@ fwrite($file, $write_data);
 flock($file, LOCK_UN);
 // ファイルを閉じる
 fclose($file);
+
+// 送信結果をJSONで返す
+$response = [
+    'status' => 'success',
+];
+echo json_encode($response);
 
 // データ入力画面に移動する
 header("Location:survay.php");
