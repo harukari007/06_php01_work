@@ -2,7 +2,7 @@
 
 // データまとめ用の空文字変数
 $str = '';
-$array = [];
+// $array = [];
 
 // ファイルを開く（読み取り専用）
 $file = fopen('data/listofpart.csv', 'r');
@@ -38,8 +38,8 @@ $arrayString = implode("", $array);
 // }
 // 配列の要素を空文字で連結して文字列にする
 
-var_dump($str);
-exit();
+// var_dump($str);
+// exit();
 // データがとんでるか確認する。
 
 ?>
