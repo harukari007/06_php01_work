@@ -18,24 +18,23 @@ if ($file) {
 
         // データを整形して配列に追加
         $array[] = [
-            "preferredDateTime" => $data[0],
-            "eventName" => $data[1],
-            "nameKana" => $data[2],
-            "email" => $data[3],
-            "phone" => $data[4],
-            "attendees" => $data[5],
+            "preferredDateTime" => isset($data[0]) ? $data[0] : '',
+            "eventName" => isset($data[1]) ? $data[1] : '',
+            "nameKana" => isset($data[2]) ? $data[2] : '',
+            "email" => isset($data[3]) ? $data[3] : '',
+            "phone" => isset($data[4]) ? $data[4] : '',
+            "attendees" => isset($data[5]) ? $data[5] : '',
             "comments" => isset($data[6]) ? $data[6] : ''
         ];
-
         // 一覧画面用のHTMLを生成
         $str .= "<tr>
-        <td>{$data[0]}</td>
-        <td>{$data[1]}</td>
-        <td>{$data[2]}</td>
-        <td>{$data[3]}</td>
-        <td>{$data[4]}</td>
-        <td>{$data[5]}</td>
-        <td>{$data[6]}</td>
+        <td>" . htmlspecialchars($data[0], ENT_QUOTES, 'UTF-8') . "</td>
+        <td>" . htmlspecialchars($data[1], ENT_QUOTES, 'UTF-8') . "</td>
+        <td>" . htmlspecialchars($data[2], ENT_QUOTES, 'UTF-8') . "</td>
+        <td>" . htmlspecialchars($data[3], ENT_QUOTES, 'UTF-8') . "</td>
+        <td>" . htmlspecialchars($data[4], ENT_QUOTES, 'UTF-8') . "</td>
+        <td>" . htmlspecialchars($data[5], ENT_QUOTES, 'UTF-8') . "</td>
+        <td>" . htmlspecialchars($data[6], ENT_QUOTES, 'UTF-8') . "</td>
         </tr>";
     }
 }

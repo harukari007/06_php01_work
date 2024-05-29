@@ -14,8 +14,7 @@ $paymentMethod = $_POST['paymentMethod'];
 $comments = $_POST['comments'];
 
 // データ1件を1行にまとめる(カンマで区切る）
-$write_data = "{$preferredDateTime},{$eventName},{$nameKana},{$email},{$phone},{$attendees},
-{$comments}\n";
+$write_data = "{$preferredDateTime},{$eventName},{$nameKana},{$email},{$phone},{$attendees},{$comments}\n";
 
 // ファイルを開く．引数が`a`である部分に注目！
 $file = fopen('data/listofpart.csv', 'a');
