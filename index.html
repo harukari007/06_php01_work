@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>Firebase_セミナー申し込みフォーム</title>
+    <link rel="stylesheet" href="css/form.css">
+</head>
+
+<body>
+
+    <!-- コンテンツ表示画面 -->
+
+    <div>
+        <form>
+            <h2>イベント参加申し込みフォーム</h2>
+            <label for="eventName">希望イベント名:</label>
+            <select id="eventName" name="eventName" required>
+                <option value="real525">5/25 リアル開催 ロボット導入・IoT活用セミナー</option>
+                <option value="onlinewebinar">DX活用 オンラインウェビナー</option>
+                <option value="real801">8/1 xx導入補助金 オンラインセミナー</option>
+            </select>
+
+            <label for="preferredDateTime">希望する日時:</label>
+            <input type="datetime-local" id="preferredDateTime" name="preferredDateTime" required>
+
+            <label for="nameKana">名前（フリガナ）:</label>
+            <input type="text" id="nameKana" name="nameKana" required>
+
+            <label for="email">メールアドレス:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">電話番号:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="attendees">参加人数:</label>
+            <input type="number" id="attendees" name="attendees" min="1" required>
+
+            <label for="paymentMethod">支払い方法:</label>
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="creditCard">クレジットカード</option>
+                <option value="bankTransfer">銀行振込</option>
+                <option value="paypal">PayPal</option>
+            </select>
+
+            <label for="comments">意見または質問:</label>
+            <textarea id="comments" name="comments" rows="4"></textarea>
+
+            <button type="submit" id="submit">申し込む</button>
+            <!-- <button id="sanka">参加者一覧</button> -->
+        </form>
+        <!-- <div> 名前：<input type="text" id=" uname"> </div>
+        <div>
+            <textarea id="text" cols="30" rows="10"></textarea>
+            <button id="send">送信</button>
+        </div>
+        <div id="output"></div> -->
+    </div>
+    <!--/ コンテンツ表示画面 -->
+
+
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- JQuery -->
+
+
+    <!--** 以下Firebase **-->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            addDoc,
+            serverTimestamp,
+            query,
+            orderBy,
+            onSnapshot,
+        } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyCp4_wMWiiYmABdPT9WDYejtdEfbAUuI8c",
+            authDomain: "lp-work.firebaseapp.com",
+            projectId: "lp-work",
+            storageBucket: "lp-work.appspot.com",
+            messagingSenderId: "7327799903",
+            appId: "1:7327799903:web:0a9c4c1ff4bb814b0bd9ea"
+        };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);//Firestoreに接続
+        const q = query(collection(db, "lp"), orderBy("time", "desc"));
+
+
+        $("#submit").on("click", function () {
+            const postData = {
+                eventName: $("#eventName").val(),
+                preferredDateTime: $("#preferredDateTime").val(),
+                nameKana: $("#nameKana").val(),
+                email: $("#email").val(),
+                phone: $("#phone").val(),
+                attendees: $("#attendees").val(),
+                paymentMethod: $("#paymentMethod").val(),
+                comments: $("#comments").val(),
+                time: serverTimestamp(),
+            }
+            console.log(postData);
+            addDoc(collection(db, "lp"), postData);
+        });
+
+        // データ取得処理
+//         onSnapshot(collection(db, "lp"), (querySnapshot) => {
+//             console.log(querySnapshot.docs);
+//         });
+
+//         const documents = [];
+//         querySnapshot.docs.forEach(function (doc) {
+//             const document = {
+//                 id: doc.id,
+//                 data: doc.data(),
+//             };
+//             documents.push(document);
+//         });
+//         console.log(documents);
+
+
+//         const htmlElements = [];
+//         documents.forEach(function (document) {
+//             htmlElements.push(`
+//     <li id="${document.id}">
+//       <p>${document.data.name} at ${document.data.time}</p>
+//       <p>${document.data.text}</p>
+//     </li>
+//   `);
+//         });
+
+//         $("#output").html(htmlElements);
+
+    // $("#sanka").on("click", function () {
+    //     const htmlElements = []; // 参加者一覧のHTML要素を格納する配列
+    //     onSnapshot(q, (querySnapshot) => { // Firestoreのコレクション"lp"からデータを取得
+    //         querySnapshot.forEach((doc) => { // 各ドキュメントに対して処理を行う
+    //             const data = doc.data(); // ドキュメントのデータを取得
+    //             // 参加者の情報をHTMLに変換し、配列に追加
+    //             htmlElements.push(`
+    //             <li>
+    //                 <p>イベント名: ${data.eventName}</p>
+    //                 <p>希望日時: ${data.preferredDateTime}</p>
+    //                 <p>名前（フリガナ）: ${data.nameKana}</p>
+    //                 <p>メールアドレス: ${data.email}</p>
+    //                 <p>電話番号: ${data.phone}</p>
+    //                 <p>参加人数: ${data.attendees}</p>
+    //                 <p>支払い方法: ${data.paymentMethod}</p>
+    //                 <p>意見または質問: ${data.comments}</p>
+    //                 <p>申込日時: ${data.time}</p>
+    //             </li>
+    //         `);
+    //         });
+    //         // 参加者一覧を表示する要素にHTMLをセット
+    //         $("#output").html(htmlElements.join(""));
+    //     });
+    // });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>
