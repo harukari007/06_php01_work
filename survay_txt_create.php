@@ -17,18 +17,6 @@ $comments = $_POST['comments'];
 $write_data = "{$eventName} {$preferredDateTime}{$nameKana}{$email}{$phone}{$attendees}
 {$paymentMethod}{$comments}\n";
 
-// $array2 = [
-//     "日時" => "preferredDateTime",
-//     "セミナー名" => "eventName",
-//     "名前" => "nameKana",
-//     "メール" => "email",
-//     "支払い" => "paymentMethod",
-//     "コメント"=> "comments",
-// ];
-
-// // キー名を指定して値を取り出す
-// echo $array2['サーバ'];
-
 // ファイルを開く．引数が`a`である部分に注目！
 $file = fopen('data/listofpart.csv', 'a');
 // ファイルをロックする

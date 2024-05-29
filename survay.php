@@ -1,20 +1,10 @@
 <?php
-// var_dump($_GET);
-// exit();
-// 最初にデータをうけとれているか確認する。
-
-$pageFlag = 0; // 入力画面のフラグ(Topのフォーム画面)
-    // $_POST['btn_confirm']が空でなければ $psteFlag = 1 に切り替える
-    if (!empty($_POST['btn_confirm'])) {
-        $pageFlag = 1;
-    }
-
-    // $_POST['btn_submit']が空でなければ $psteFlag = 2 に切り替える
-    if (!empty($_POST['btn_submit'])) {
-        $pageFlag = 2;
-    }
+    // var_dump($_GET);
+    // exit();
+    // 最初にデータをうけとれているか確認する。
+    // タイムゾーンを日本時間に設定
+    date_default_timezone_set('Asia/Tokyo');
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -25,41 +15,9 @@ $pageFlag = 0; // 入力画面のフラグ(Topのフォーム画面)
 </head>
 
 <body>
-    <!-- コンテンツ表示画面 -->
     <!-- フォーム入力画面を作成する(TOP) -->
-    <?php if ($pageFlag === 0) : ?>
-        入力画面
-    <?php endif; ?>
-
-    <!-- フォームに入力された確認画面の作成 -->
-    <?php if ($pageFlag === 1) : ?>
-        <form method="POST" action="form.php">
-            氏名
-            <?php echo $_POST['name']; ?>
-            <br>
-            メールアドレス
-            <?php echo $_POST['email']; ?>
-            <br>
-            <!-- name属性の 'back' は $pageFlagの定義がないので 初期設定の '$pageFlag = 0;' になる -->
-            <input type="submit" name="back" value="戻る">
-            <!-- 完了ページへデータを送信する為のボタン($pageFlag = 2) -->
-            <input type="submit" name="btn_submit" value="送信する">
-            <!-- 各入力データの保持 hiddenの使用 -->
-            <input type="hidden" name="name" value="<?php echo $_POST['name']; ?>">
-            <input type="hidden" name="email" value="<?php echo $_POST['email']; ?>">
-        </form>
-    <?php endif; ?>
-
-    <!-- 確認画面から送信後に遷移する完了画面の作成 -->
-    <?php if ($pageFlag === 2) : ?>
-        送信が完了しました。
-    <?php endif; ?>
-
-
-    <!-- フォーム入力画面を作成する(TOP) -->
-    <?php if ($pageFlag === 0) : ?>
         <div>
-            <form action="contactfoam.php" method="POST">
+            <form action="survay_txt_create.php" method="POST">
                 <h2>イベント参加申し込みフォーム</h2>
                 <label for="eventName">希望イベント名:</label>
                 <select id="eventName" name="eventName" required>
@@ -92,13 +50,12 @@ $pageFlag = 0; // 入力画面のフラグ(Topのフォーム画面)
 
                 <label for="comments">意見または質問:</label>
                 <textarea id="comments" name="comments" rows="4"></textarea>
-                <!-- btn_confirm(確認ページ)に入力データが送信されるようにする -->
-                <button type="submit" id="submit" name="btn_confirm">確認</button>
+
+                <button type="submit" id="submit" >送信</button>
             </form>
 
             <a href="survay_txt_read.php">参加者一覧画面</a>
         </div>
-    <?php endif; ?>
     <!--/ コンテンツ表示画面 -->
 
 
@@ -122,7 +79,7 @@ $pageFlag = 0; // 入力画面のフラグ(Topのフォーム画面)
             onSnapshot,
         } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
         const firebaseConfig = {
-            apiKey: "AIzaSyCp4_wMWiiYmABdPT9WDYejtdEfbAUuI8c",
+            apiKey: ",
             authDomain: "lp-work.firebaseapp.com",
             projectId: "lp-work",
             storageBucket: "lp-work.appspot.com",

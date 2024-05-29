@@ -23,7 +23,7 @@ $comments = $_POST['comments'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>todo表示画面（POST）</title>
+    <title>セミナー参加者一覧画面（POST）</title>
 </head>
 
 <body>

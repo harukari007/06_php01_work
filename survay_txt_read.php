@@ -1,6 +1,5 @@
 <?php
 
-
 // データまとめ用の空文字変数
 $str = '';
 $array = [];
@@ -28,10 +27,19 @@ fclose($file);
 // `$str`に全てのデータ（タグに入った状態）がまとまるので，HTML内の任意の場所に表示する．
 
 $arrayString = implode("", $array);
+if ($file) {
+    while ($line = fgets($file)) {
+        // いい感じの形にして配列に追加
+        $array[] = [
+            "todo" => str_replace("\n", "", implode(" ", array_slice(explode(" ", $line), 1))),
+            "deadline" => explode(" ", $line)[0],
+        ];
+    }
+}
 // 配列の要素を空文字で連結して文字列にする
 
-// var_dump($str);
-// exit();
+var_dump($str);
+exit();
 // データがとんでるか確認する。
 
 ?>
