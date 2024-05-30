@@ -29,7 +29,7 @@ $comments = $_POST['comments'];
 <body>
     <fieldset>
         <legend>フォーム送信内容（確認画面）</legend>
-        <table>
+        <table border="1">
             <thead>
                 <tr>
                     <th><?= $eventName ?></th>
